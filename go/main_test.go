@@ -280,3 +280,19 @@ func TestBinarySearch(t *testing.T) {
 		t.Errorf("Value should exist")
 	}
 }
+
+func TestNextGreatestLetter(t *testing.T) {
+	arr := []byte("cfj")
+	result := nextGreatesLetter(arr, []byte("c")[0])
+
+	if string(result) != "f" {
+		t.Errorf("Wrong letter %d %v", result, string(result))
+	}
+}
+
+func TestPeakIndexMountainArray(t *testing.T) {
+	arr := []int{24, 69, 100, 99, 79, 78, 67, 36, 26, 19}
+	result := peakIndexMountainArray(arr)
+
+	t.Errorf("Result %v", result)
+}

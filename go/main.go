@@ -469,3 +469,41 @@ func binarySearch(arr []int, target int) int {
 
 	return -1
 }
+
+func nextGreatesLetter(letters []byte, target byte) byte {
+	left, right := 0, len(letters)-1
+	result := 0
+
+	for left <= right {
+		midIdx := left + (right-left)/2
+
+		if target < letters[midIdx] {
+			result = midIdx
+			right = midIdx - 1
+		} else {
+			left = midIdx + 1
+		}
+	}
+
+	return letters[result]
+}
+
+func peakIndexMountainArray(arr []int) int {
+	result, left, right := 0, 0, len(arr)-1
+
+	for left <= right {
+		mid := left + (right-left)/2
+
+		result = mid
+
+		if arr[mid] < arr[mid+1] {
+			left = mid + 1
+		} else if arr[mid] < arr[mid-1] {
+			right = mid - 1
+		} else {
+			break
+		}
+	}
+
+	return result
+}
