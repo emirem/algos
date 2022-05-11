@@ -294,5 +294,80 @@ func TestPeakIndexMountainArray(t *testing.T) {
 	arr := []int{24, 69, 100, 99, 79, 78, 67, 36, 26, 19}
 	result := peakIndexMountainArray(arr)
 
-	t.Errorf("Result %v", result)
+	if result != 2 {
+		t.Errorf("Wrong peak %d", result)
+	}
+}
+
+func TestTreeTraversal(t *testing.T) {
+	tree := TreeNode{Val: 1, Left: &TreeNode{Val: 2, Left: &TreeNode{Val: 4}, Right: &TreeNode{Val: 5}}, Right: &TreeNode{Val: 3, Left: &TreeNode{Val: 6}, Right: &TreeNode{Val: 7}}}
+
+	treeTraversal(&tree)
+
+	// t.Errorf("Wrong tree %v", tree)
+}
+
+func TestTreeDFS(t *testing.T) {
+	tree := TreeNode{Val: 1, Left: &TreeNode{Val: 2, Left: &TreeNode{Val: 4}, Right: &TreeNode{Val: 5}}, Right: &TreeNode{Val: 3, Left: &TreeNode{Val: 6}, Right: &TreeNode{Val: 7}}}
+
+	result := treeDFS(&tree, 1)
+
+	if result == -1 {
+		t.Errorf("Value not found in tree %v", result)
+	}
+
+}
+
+func TestTreeBFS(t *testing.T) {
+	tree := &TreeNode{Val: 1, Left: &TreeNode{Val: 2, Left: &TreeNode{Val: 4}, Right: &TreeNode{Val: 5}}, Right: &TreeNode{Val: 3, Left: &TreeNode{Val: 6}, Right: &TreeNode{Val: 7}}}
+
+	result := treeBFS(tree, 6)
+
+	if result == -1 {
+		t.Errorf("Value not found in tree %v", result)
+	}
+}
+
+func TestAverageOfLevels(t *testing.T) {
+	tree := &TreeNode{Val: 1, Left: &TreeNode{Val: 2, Left: &TreeNode{Val: 4}, Right: &TreeNode{Val: 5}}, Right: &TreeNode{Val: 3, Left: &TreeNode{Val: 6}, Right: &TreeNode{Val: 7}}}
+
+	sums := averageOfLevels(tree)
+	expected := []float64{1, 2.5, 5.5}
+
+	for idx, num := range sums {
+		if num != expected[idx] {
+			t.Errorf("Expected sum not there %v", num)
+		}
+	}
+}
+
+func TestMinDepth(t *testing.T) {
+	tree := &TreeNode{Val: 1, Left: &TreeNode{Val: 2, Left: &TreeNode{Val: 4}}, Right: &TreeNode{Val: 3, Left: &TreeNode{Val: 6}, Right: &TreeNode{Val: 7}}}
+
+	min := minDepth(tree)
+
+	if min != 3 {
+		t.Errorf("Min depth is wrong %d", min)
+	}
+}
+
+func TestIsSameTree(t *testing.T) {
+	tree := &TreeNode{Val: 1, Left: &TreeNode{Val: 2, Left: &TreeNode{Val: 4}}, Right: &TreeNode{Val: 3, Left: &TreeNode{Val: 6}, Right: &TreeNode{Val: 7}}}
+	tree2 := &TreeNode{Val: 1, Left: &TreeNode{Val: 2, Left: &TreeNode{Val: 4}}, Right: &TreeNode{Val: 3, Left: &TreeNode{Val: 6}, Right: &TreeNode{Val: 7}}}
+
+	isSame := isSameTree(tree, tree2)
+
+	if isSame == false {
+		t.Error("Should be the same tree")
+	}
+}
+
+func TestHasPathSum(t *testing.T) {
+	tree := &TreeNode{Val: 1, Left: &TreeNode{Val: 2}, Right: &TreeNode{Val: 3}}
+
+	hasSum := hasPathSum(tree, 4)
+
+	if hasSum == false {
+		t.Errorf("Should have that sum %v", hasSum)
+	}
 }

@@ -507,3 +507,144 @@ func peakIndexMountainArray(arr []int) int {
 
 	return result
 }
+
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
+func treeTraversal(root *TreeNode) {
+	if root == nil {
+		return
+	}
+
+	fmt.Println(root.Val)
+	treeTraversal(root.Left)
+	treeTraversal(root.Right)
+}
+
+func treeDFS(root *TreeNode, val int) int {
+	if root == nil {
+		return -1
+	}
+
+	if root.Val == val {
+		return root.Val
+	}
+
+	var result int
+
+	result = treeDFS(root.Left, val)
+
+	if result == -1 {
+		result = treeDFS(root.Left, val)
+	}
+
+	return result
+}
+
+func treeBFS(root *TreeNode, val int) int {
+	queue := []*TreeNode{root}
+
+	for len(queue) > 0 {
+		currNode := queue[0]
+		queue = queue[1:] // removes 1st el
+
+		if val == currNode.Val {
+			return currNode.Val
+		}
+
+		if currNode.Left != nil {
+			queue = append(queue, currNode.Left)
+		}
+
+		if currNode.Right != nil {
+			queue = append(queue, currNode.Right)
+		}
+	}
+
+	return -1
+}
+
+func averageOfLevels(root *TreeNode) []float64 {
+	currLvlQueue := []*TreeNode{root}
+	avgSums := []float64{}
+
+	for len(currLvlQueue) > 0 {
+		nextLvlQueue := []*TreeNode{}
+		currLvlSum := 0.0
+
+		// Process this lvl sum and prepare next lvl queue
+		for _, node := range currLvlQueue {
+			currLvlSum += float64(node.Val)
+
+			if node.Left != nil {
+				nextLvlQueue = append(nextLvlQueue, node.Left)
+			}
+
+			if node.Right != nil {
+				nextLvlQueue = append(nextLvlQueue, node.Right)
+			}
+		}
+
+		avgSums = append(avgSums, currLvlSum/float64(len(currLvlQueue)))
+
+		currLvlQueue = nextLvlQueue
+	}
+
+	return avgSums
+}
+
+func minDepth(root *TreeNode) int {
+	if root == nil {
+		return 0
+	}
+
+	leftDepth := minDepth(root.Left)
+	rightDepth := minDepth(root.Right)
+
+	if leftDepth == 0 || rightDepth == 0 {
+		return leftDepth + rightDepth + 1
+	}
+
+	if leftDepth < rightDepth {
+		return leftDepth + 1
+	}
+
+	return rightDepth + 1
+}
+
+func isSameTree(p *TreeNode, q *TreeNode) bool {
+	if p == nil && q == nil {
+		return true
+	}
+
+	if p == nil || q == nil {
+		return false
+	}
+
+	if p.Val == q.Val {
+		sameLeft := isSameTree(p.Left, q.Left)
+		sameRight := isSameTree(p.Right, q.Right)
+
+		return sameLeft && sameRight
+	}
+
+	return false
+}
+
+func hasPathSum(root *TreeNode, targetSum int) bool {
+	if root == nil {
+		return false
+	}
+
+	if root.Left == nil && root.Right == nil && targetSum-root.Val == 0 {
+		return true
+	}
+
+	hasLeft := hasPathSum(root.Left, targetSum-root.Val)
+	hasRight := hasPathSum(root.Right, targetSum-root.Val)
+
+	return hasLeft || hasRight
+}
