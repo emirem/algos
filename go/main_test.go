@@ -425,3 +425,25 @@ func TestTwoSumSorted(t *testing.T) {
 		t.Errorf("Two sum sorted wrong %v", res)
 	}
 }
+
+func TestSortedSquares(t *testing.T) {
+	arr := []int{-4, -1, 0, 3, 10}
+	expected := []int{0, 1, 9, 16, 100}
+
+	res := sortedSquares(arr)
+
+	for idx, val := range res {
+		if val != expected[idx] {
+			t.Errorf("Sorted square wrong %v", res)
+		}
+	}
+}
+
+func TestBackspaceCompare(t *testing.T) {
+	str := "y#fo##f"
+	str2 := "y#f#o##f"
+
+	if backSpaceCompare(str, str2) == false {
+		t.Error("Strings should be the same")
+	}
+}

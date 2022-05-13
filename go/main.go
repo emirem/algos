@@ -732,3 +732,46 @@ func twoSumSorted(nums []int, target int) [2]int {
 
 	return res
 }
+
+func Abs(num int) int {
+	if num < 0 {
+		return -num
+	}
+
+	return num
+}
+
+func sortedSquares(nums []int) []int {
+	results := make([]int, len(nums))
+	i, j := 0, len(nums)-1
+
+	for k := len(nums) - 1; k >= 0; k-- {
+		if Abs(nums[i]) > Abs(nums[j]) {
+			results[k] = nums[i] * nums[i]
+			i++
+		} else {
+			results[k] = nums[j] * nums[j]
+			j--
+		}
+	}
+
+	return results
+}
+
+func formatString(s string) string {
+	res := ""
+	for _, char := range s {
+		if string(char) == "#" && len(res) > 0 {
+			res = res[:len(res)-1]
+		} else if string(char) != "#" {
+			res += string(char)
+		}
+	}
+
+	return res
+}
+func backSpaceCompare(s string, t string) bool {
+	res1, res2 := formatString(s), formatString(t)
+
+	return res1 == res2
+}
