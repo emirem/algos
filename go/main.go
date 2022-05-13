@@ -692,3 +692,43 @@ func invertTree(root *TreeNode) *TreeNode {
 
 	return root
 }
+
+func twoSum(nums []int, target int) []int {
+	seenNums := make(map[int]int)
+
+	for idx, num := range nums {
+		need := target - num
+
+		if _, ok := seenNums[need]; ok {
+			return []int{seenNums[need], idx}
+		}
+
+		seenNums[num] = idx
+	}
+
+	return []int{-1, -1}
+}
+
+func twoSumSorted(nums []int, target int) [2]int {
+	res := [2]int{}
+
+	sort.Ints(nums)
+
+	i, j := 0, len(nums)-1
+
+	for i < j {
+		if nums[i]+nums[j] == target {
+			return [2]int{i, j}
+		}
+
+		if nums[i]+nums[j] < target {
+			i++
+		}
+
+		if nums[i]+nums[j] > target {
+			j--
+		}
+	}
+
+	return res
+}

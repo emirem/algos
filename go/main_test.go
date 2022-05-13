@@ -400,3 +400,28 @@ func TestLowestCommonAncestor(t *testing.T) {
 
 // 	t.Errorf("Invert result %v", res)
 // }
+
+func TestTwoSum(t *testing.T) {
+	nums := []int{3, 2, 4}
+	target := 6
+	expected := []int{1, 2}
+
+	res := twoSum(nums, target)
+
+	for idx, val := range res {
+		if val != expected[idx] {
+			t.Errorf("Two sum wrong %v", res)
+		}
+	}
+}
+
+func TestTwoSumSorted(t *testing.T) {
+	nums := []int{2, 7, 11, 15}
+	target := 9
+
+	res := twoSumSorted(nums, target)
+
+	if res != [2]int{0, 1} {
+		t.Errorf("Two sum sorted wrong %v", res)
+	}
+}
