@@ -299,13 +299,13 @@ func TestPeakIndexMountainArray(t *testing.T) {
 	}
 }
 
-func TestTreeTraversal(t *testing.T) {
-	tree := TreeNode{Val: 1, Left: &TreeNode{Val: 2, Left: &TreeNode{Val: 4}, Right: &TreeNode{Val: 5}}, Right: &TreeNode{Val: 3, Left: &TreeNode{Val: 6}, Right: &TreeNode{Val: 7}}}
+// func TestTreeTraversal(t *testing.T) {
+// 	tree := TreeNode{Val: 1, Left: &TreeNode{Val: 2, Left: &TreeNode{Val: 4}, Right: &TreeNode{Val: 5}}, Right: &TreeNode{Val: 3, Left: &TreeNode{Val: 6}, Right: &TreeNode{Val: 7}}}
 
-	treeTraversal(&tree)
+// 	treeTraversal(&tree)
 
-	// t.Errorf("Wrong tree %v", tree)
-}
+// 	// t.Errorf("Wrong tree %v", tree)
+// }
 
 func TestTreeDFS(t *testing.T) {
 	tree := TreeNode{Val: 1, Left: &TreeNode{Val: 2, Left: &TreeNode{Val: 4}, Right: &TreeNode{Val: 5}}, Right: &TreeNode{Val: 3, Left: &TreeNode{Val: 6}, Right: &TreeNode{Val: 7}}}
@@ -371,3 +371,32 @@ func TestHasPathSum(t *testing.T) {
 		t.Errorf("Should have that sum %v", hasSum)
 	}
 }
+
+// func TestMergeTrees(t *testing.T) {
+// 	tree1 := TreeNode{Val: 1, Left: &TreeNode{Val: 3, Left: &TreeNode{Val: 5}}, Right: &TreeNode{Val: 2}}
+// 	tree2 := TreeNode{Val: 2, Left: &TreeNode{Val: 1, Right: &TreeNode{Val: 4}}, Right: &TreeNode{Val: 3, Right: &TreeNode{Val: 7}}}
+
+// 	res := mergeTrees(&tree1, &tree2)
+
+// 	t.Errorf("Tree not merged properly %v", res)
+// }
+
+func TestLowestCommonAncestor(t *testing.T) {
+	tree := &TreeNode{Val: 6, Left: &TreeNode{Val: 2, Left: &TreeNode{Val: 0}, Right: &TreeNode{Val: 4}}, Right: &TreeNode{Val: 8, Left: &TreeNode{Val: 7}, Right: &TreeNode{Val: 9}}}
+
+	res := lowestCommonAncestor(tree, &TreeNode{Val: 2}, &TreeNode{Val: 4})
+
+	if res.Val != 2 {
+		t.Errorf("Common ancestor is wrong %v", res)
+	}
+}
+
+// func TestInvertTree(t *testing.T) {
+// 	tree := &TreeNode{Val: 2, Left: &TreeNode{Val: 1}, Right: &TreeNode{Val: 3}}
+
+// 	res := invertTree(tree)
+
+// 	treeTraversal(res)
+
+// 	t.Errorf("Invert result %v", res)
+// }

@@ -648,3 +648,47 @@ func hasPathSum(root *TreeNode, targetSum int) bool {
 
 	return hasLeft || hasRight
 }
+
+func mergeTrees(root1 *TreeNode, root2 *TreeNode) *TreeNode {
+	if root1 != nil && root2 != nil {
+		root := TreeNode{Val: root1.Val + root2.Val}
+
+		root.Left = mergeTrees(root1.Left, root2.Left)
+		root.Right = mergeTrees(root1.Right, root2.Right)
+
+		return &root
+	}
+
+	if root1 != nil {
+		return root1
+	}
+
+	return root2
+}
+
+func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
+	if p.Val < root.Val && q.Val < root.Val {
+		return lowestCommonAncestor(root.Left, p, q)
+	}
+
+	if p.Val > root.Val && q.Val > root.Val {
+		return lowestCommonAncestor(root.Right, p, q)
+	}
+
+	return root
+}
+
+func invertTree(root *TreeNode) *TreeNode {
+	if root == nil {
+		return nil
+	}
+
+	invertTree(root.Left)
+	invertTree(root.Right)
+
+	temp := root.Left
+	root.Left = root.Right
+	root.Right = temp
+
+	return root
+}
