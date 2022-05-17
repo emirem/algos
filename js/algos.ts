@@ -235,29 +235,102 @@ function missingNumber(nums: number[]): number {
       return sorted[i] + 1;
     }
   }
-  // const needNums: { [key: number]: boolean } = {};
-  // let missing = 0;
 
-  // for (let i = 0; i < nums.length; i++) {
-  //   if (nums[i] - 1 > 0 && needNums[nums[i] - 1] != true) {
-  //     needNums[nums[i] - 1] = false;
-  //   }
-
-  //   if (nums[i] + 1 <= nums.length && needNums[nums[i] + 1] != true) {
-  //     needNums[nums[i] + 1] = false;
-  //   }
-
-  //   needNums[nums[i]] = true;
-  // }
-
-  // for (let key in needNums) {
-  //   if (needNums[key] === false) {
-  //     return (missing = parseInt(key));
-  //   }
-  // }
-
-  // return missing;
   return 0;
+}
+
+function findDisappearedNumbers(nums: number[]): number[] {
+  const result: number[] = [];
+  const seenNums: { [key: number]: boolean } = {};
+
+  for (let i = 1; i <= nums.length; i++) {
+    seenNums[i] = false;
+  }
+
+  for (let i = 0; i < nums.length; i++) {
+    seenNums[nums[i]] = true;
+  }
+
+  for (let key in seenNums) {
+    if (seenNums[key] === false) {
+      result.push(parseInt(key));
+    }
+  }
+
+  return result;
+}
+
+function singleNumber(nums: number[]): number {
+  const result = -1;
+
+  for (let i = 0; i < nums.length; i++) {
+    const bsres = binarySearch(
+      nums.slice(0, i).concat(nums.slice(i + 1)),
+      nums[i]
+    );
+
+    if (bsres === -1) {
+      return nums[i];
+    }
+  }
+
+  return result;
+}
+
+const stairsCalcMap: { [key: number]: number } = {};
+function climbStairs(n: number): number {
+  if (n === 0) return 0;
+  if (n === 1) return 1;
+  if (n === 2) return 2;
+
+  if (stairsCalcMap[n]) {
+    return stairsCalcMap[n];
+  }
+
+  stairsCalcMap[n] = climbStairs(n - 1) + climbStairs(n - 2);
+
+  return stairsCalcMap[n];
+}
+
+function maxProfit(prices: number[]): number {
+  let i = 0;
+  let j = 1;
+  let maxProfit = 0;
+
+  while (j < prices.length) {
+    const currentProfit = prices[j] - prices[i];
+
+    if (prices[j] < prices[i]) {
+      i = j;
+    }
+
+    if (currentProfit > maxProfit) {
+      maxProfit = currentProfit;
+    }
+
+    j++;
+  }
+
+  return maxProfit;
+}
+
+function maxSubArray(nums: number[]): number {
+  let maxSum = nums[0];
+  let currSum = nums[0];
+
+  for (let i = 1; i < nums.length; i++) {
+    if (nums[i] > currSum + nums[i]) {
+      currSum = nums[i];
+    } else {
+      currSum += nums[i];
+    }
+
+    if (maxSum < currSum) {
+      maxSum = currSum;
+    }
+  }
+
+  return maxSum;
 }
 
 let arr = [43, 231, 43, 12];
@@ -277,4 +350,9 @@ let head = new LinkNode(
 // traverseLinkedList(newList);
 // console.log(containsDuplicate([1, 2, 3, 3]));
 // console.log(missingNumber([9, 6, 4, 2, 3, 5, 7, 0, 1]));
-console.log(missingNumber([3, 0, 1]));
+// console.log(missingNumber([3, 0, 1]));
+// console.log(findDisappearedNumbers([5, 4, 6, 7, 9, 3, 10, 9, 5, 6]));
+// console.log(singleNumber([1]));
+// console.log(climbStairs(5));
+// console.log(maxProfit([7, 1, 5, 3, 6, 4]));
+console.log(maxSubArray([-2, 1, -3, 4, -1, 2, 1, -5, 4]));
