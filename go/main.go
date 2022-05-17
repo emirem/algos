@@ -770,6 +770,7 @@ func formatString(s string) string {
 
 	return res
 }
+
 func backSpaceCompare(s string, t string) bool {
 	res1, res2 := formatString(s), formatString(t)
 
