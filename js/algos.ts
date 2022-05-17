@@ -182,24 +182,24 @@ function binarySearch(arr: number[], target: number): number {
   return -1;
 }
 
-class LinkNode {
+class ListNode {
   val: number;
-  next?: LinkNode;
+  next?: ListNode;
 
-  constructor(val: number, next?: LinkNode) {
+  constructor(val: number, next?: ListNode) {
     this.val = val;
     this.next = next;
   }
 }
 
-function traverseLinkedList(head?: LinkNode): void {
+function traverseLinkedList(head?: ListNode): void {
   if (!head) return;
 
   console.log(head.val);
   traverseLinkedList(head.next);
 }
 
-function reverseLinkedList(head?: LinkNode): LinkNode | undefined {
+function reverseLinkedList(head?: ListNode): ListNode | undefined {
   if (!head || !head.next) return head;
 
   const result = reverseLinkedList(head.next);
@@ -333,11 +333,174 @@ function maxSubArray(nums: number[]): number {
   return maxSum;
 }
 
+function hasCycle(head: ListNode | undefined): boolean {
+  if (!head) return false;
+
+  let slow: ListNode | undefined = head;
+  let fast: ListNode | undefined = head.next;
+
+  while (fast && fast.next) {
+    fast = fast.next.next;
+    slow = slow?.next;
+
+    if (slow === fast) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function middleNode(head: ListNode | undefined): ListNode | undefined {
+  if (!head) {
+    return undefined;
+  }
+
+  let slow: ListNode | undefined = head;
+  let fast: ListNode | undefined = head.next;
+
+  while (fast) {
+    fast = fast.next?.next;
+    slow = slow?.next;
+  }
+
+  return slow;
+}
+
+function isPalindrome(head: ListNode | undefined): boolean {
+  if (!head) {
+    return false;
+  }
+
+  const stack = [];
+  let curentNode: ListNode | undefined = head;
+
+  while (curentNode) {
+    stack.push(curentNode.val);
+    curentNode = curentNode.next;
+  }
+
+  curentNode = head;
+
+  for (let i = stack.length - 1; i > 0; i--) {
+    if (stack[i] !== curentNode?.val) {
+      return false;
+    }
+
+    curentNode = curentNode.next;
+  }
+
+  return true;
+}
+
+function removeElements(
+  head: ListNode | undefined,
+  val: number
+): ListNode | undefined {
+  if (!head) {
+    return undefined;
+  }
+  let currentNode: ListNode | undefined = head;
+
+  while (currentNode?.next) {
+    while (currentNode?.next?.val === val) {
+      currentNode.next = currentNode?.next?.next;
+    }
+
+    currentNode = currentNode?.next;
+  }
+
+  if (head.val === val) return head.next;
+
+  return head;
+}
+
+function deleteDuplicates(head: ListNode | undefined): ListNode | undefined {
+  if (!head) {
+    return undefined;
+  }
+
+  let currentNode: ListNode | undefined = head;
+
+  while (currentNode?.next) {
+    while (currentNode?.val === currentNode?.next?.val) {
+      currentNode.next = currentNode.next?.next;
+    }
+
+    currentNode = currentNode.next;
+  }
+
+  return head;
+}
+
+function mergeTwoLists(
+  list1: ListNode | undefined,
+  list2: ListNode | undefined
+): ListNode | undefined {
+  if (!list1) return list2;
+  if (!list2) return list1;
+
+  if (list1.val < list2.val) {
+    list1.next = mergeTwoLists(list1.next, list2);
+    return list1;
+  }
+
+  list2.next = mergeTwoLists(list1, list2.next);
+  return list2;
+}
+
+function nextGreatestLetter(letters: string[], target: string): string {
+  let left = 0;
+  let right = letters.length - 1;
+  let maxIdx = 0;
+
+  while (left <= right) {
+    const midIdx = left + Math.floor((right - left) / 2);
+
+    if (target < letters[midIdx]) {
+      maxIdx = midIdx;
+      right = midIdx - 1;
+    } else {
+      left = midIdx + 1;
+    }
+  }
+
+  return letters[maxIdx];
+}
+
+function peakIndexInMountainArray(arr: number[]): number {
+  let left = 0;
+  let right = arr.length - 1;
+  let result = -1;
+
+  while (left <= right) {
+    const mid = left + Math.floor((right - left) / 2);
+
+    result = mid;
+
+    if (arr[mid] < arr[mid + 1]) {
+      left = mid + 1;
+    } else if (arr[mid] < arr[mid - 1]) {
+      right = mid - 1;
+    } else {
+      // we are there
+      break;
+    }
+  }
+
+  return result;
+}
+
 let arr = [43, 231, 43, 12];
-let head = new LinkNode(
+let head = new ListNode(
   1,
-  new LinkNode(2, new LinkNode(3, new LinkNode(4, new LinkNode(5))))
+  new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(3))))
 );
+
+// console.log(hasCycle(head));
+// console.log(isPalindrome(head));
+// console.log(removeElements(head, 1));
+// console.log(deleteDuplicates(head));
 
 // console.log("QS Start", quickSortStart(0, arr.length - 1, arr));
 // console.log("QS End", quickSortEnd(0, arr.length - 1, arr));
@@ -355,4 +518,6 @@ let head = new LinkNode(
 // console.log(singleNumber([1]));
 // console.log(climbStairs(5));
 // console.log(maxProfit([7, 1, 5, 3, 6, 4]));
-console.log(maxSubArray([-2, 1, -3, 4, -1, 2, 1, -5, 4]));
+// console.log(maxSubArray([-2, 1, -3, 4, -1, 2, 1, -5, 4]));
+// console.log(nextGreatestLetter(["c", "f", "j"], "j"));
+// console.log(peakIndexInMountainArray([0, 10, 5, 2]));
