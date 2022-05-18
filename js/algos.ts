@@ -191,6 +191,17 @@ class ListNode {
     this.next = next;
   }
 }
+class TreeNode {
+  val: number;
+  left?: TreeNode;
+  right?: TreeNode;
+
+  constructor(val: number, left?: TreeNode, right?: TreeNode) {
+    this.val = val;
+    this.left = left;
+    this.right = right;
+  }
+}
 
 function traverseLinkedList(head?: ListNode): void {
   if (!head) return;
@@ -491,16 +502,193 @@ function peakIndexInMountainArray(arr: number[]): number {
   return result;
 }
 
+function averageOfLevels(root: TreeNode | undefined): number[] {
+  if (!root) {
+    return [];
+  }
+
+  const averages: number[] = [];
+  let currentLvlQueue: TreeNode[] = [root];
+
+  while (currentLvlQueue.length) {
+    const nextLvlQueue: TreeNode[] = [];
+    let lvlSum = 0;
+
+    for (let i = 0; i < currentLvlQueue.length; i++) {
+      lvlSum += currentLvlQueue[i].val;
+
+      const left = currentLvlQueue[i].left;
+      const right = currentLvlQueue[i].right;
+
+      if (left !== undefined) {
+        nextLvlQueue.push(left);
+      }
+      if (right !== undefined) {
+        nextLvlQueue.push(right);
+      }
+    }
+
+    averages.push(lvlSum / currentLvlQueue.length);
+    currentLvlQueue = nextLvlQueue;
+  }
+
+  return averages;
+}
+
+function minDepth(root: TreeNode | undefined): number {
+  if (!root) return 0;
+
+  let minDepth = 0;
+  let currentLvlQueue: TreeNode[] = [root];
+
+  while (currentLvlQueue.length) {
+    const nextLvlQueue: TreeNode[] = [];
+
+    minDepth++;
+
+    for (let i = 0; i < currentLvlQueue.length; i++) {
+      if (
+        currentLvlQueue[i].left === undefined &&
+        currentLvlQueue[i].right === undefined
+      ) {
+        return minDepth;
+      }
+
+      const left = currentLvlQueue[i].left;
+      const right = currentLvlQueue[i].right;
+
+      if (left !== undefined) {
+        nextLvlQueue.push(left);
+      }
+      if (right !== undefined) {
+        nextLvlQueue.push(right);
+      }
+    }
+
+    currentLvlQueue = nextLvlQueue;
+  }
+
+  return minDepth;
+}
+
+function maxDepth(root: TreeNode | undefined): number {
+  if (!root) return 0;
+
+  let maxDepth = 0;
+  let currentLvlQueue: TreeNode[] = [root];
+
+  while (currentLvlQueue.length) {
+    const nextLvlQueue: TreeNode[] = [];
+
+    maxDepth++;
+
+    for (let i = 0; i < currentLvlQueue.length; i++) {
+      const left = currentLvlQueue[i].left;
+      const right = currentLvlQueue[i].right;
+
+      if (left !== undefined) {
+        nextLvlQueue.push(left);
+      }
+      if (right !== undefined) {
+        nextLvlQueue.push(right);
+      }
+    }
+
+    currentLvlQueue = nextLvlQueue;
+  }
+
+  return maxDepth;
+}
+
+function isSameTree(p: TreeNode | undefined, q: TreeNode | undefined): boolean {
+  if (!p && !q) {
+    return true;
+  }
+  if (!p || !q) {
+    return false;
+  }
+
+  if (p?.val === q?.val) {
+    return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+  }
+
+  return false;
+}
+
+function hasPathSum(root: TreeNode | undefined, targetSum: number): boolean {
+  if (!root) {
+    return false;
+  }
+
+  if (targetSum - root.val === 0 && !root.left && !root.right) {
+    return true;
+  }
+
+  return (
+    hasPathSum(root.left, targetSum - root.val) ||
+    hasPathSum(root.right, targetSum - root.val)
+  );
+}
+
+function mergeTrees(
+  root1: TreeNode | undefined,
+  root2: TreeNode | undefined
+): TreeNode | undefined {
+  if (root1 && root2) {
+    const root = new TreeNode(root1.val + root2.val);
+
+    root.left = mergeTrees(root1.left, root2.left);
+    root.right = mergeTrees(root1.right, root2.right);
+
+    return root;
+  }
+
+  return root1 || root2;
+}
+
+function invertTree(root: TreeNode | undefined): TreeNode | undefined {
+  if (!root) {
+    return undefined;
+  }
+
+  const temp = root.left;
+  root.left = root.right;
+  root.right = temp;
+
+  invertTree(root.left);
+  invertTree(root.right);
+
+  return root;
+}
+
 let arr = [43, 231, 43, 12];
 let head = new ListNode(
   1,
   new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(3))))
+);
+const root = new TreeNode(
+  3,
+  new TreeNode(9),
+  new TreeNode(20, new TreeNode(15), new TreeNode(7))
+);
+const root2 = new TreeNode(
+  3,
+  new TreeNode(9),
+  new TreeNode(20, new TreeNode(15), new TreeNode(7))
 );
 
 // console.log(hasCycle(head));
 // console.log(isPalindrome(head));
 // console.log(removeElements(head, 1));
 // console.log(deleteDuplicates(head));
+
+// console.log(averageOfLevels(root));
+// console.log(minDepth(root));
+// console.log(maxDepth(root));
+// console.log(isSameTree(root, root2));
+// console.log(hasPathSum(root, 2));
+// console.log(mergeTrees(root, root2));
+// console.log(invertTree(root));
 
 // console.log("QS Start", quickSortStart(0, arr.length - 1, arr));
 // console.log("QS End", quickSortEnd(0, arr.length - 1, arr));
