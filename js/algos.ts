@@ -677,6 +677,111 @@ const root2 = new TreeNode(
   new TreeNode(20, new TreeNode(15), new TreeNode(7))
 );
 
+// 12-hr min diff
+function timeToMin(time: string): number {
+  const isAm = time.includes("am");
+  let [hr, min] = time
+    .replace(/am|pm/, "")
+    .split(":")
+    .map((num) => {
+      return parseInt(num);
+    });
+
+  if (isAm) {
+    if (hr === 12) hr = 24;
+  } else {
+    hr += 12;
+  }
+
+  return hr * 60 + min;
+}
+
+function findMinDifference(timePoints: string[]): number {
+  let minDiff = Infinity;
+
+  const sortedTimes = timePoints.sort();
+
+  for (let i = 1; i < sortedTimes.length; i++) {
+    const currMin = timeToMin(sortedTimes[i]);
+    const prevMin = timeToMin(sortedTimes[i - 1]);
+
+    const diff = currMin - prevMin;
+
+    if (diff < minDiff) {
+      minDiff = diff;
+    }
+  }
+
+  const f = timeToMin(sortedTimes[0]) + 1440;
+  const l = timeToMin(sortedTimes[sortedTimes.length - 1]);
+
+  return Math.min(minDiff, f - l);
+}
+
+function parseTime(time: string): number[] {
+  return time
+    .replace(/am|pm/, "")
+    .split(":")
+    .map((timeItem) => parseInt(timeItem));
+}
+
+function get24HourFormat(hour: number, isAm: boolean): number {
+  if (isAm) {
+    if (hour === 12) {
+      return 24;
+    }
+    return hour;
+  }
+
+  return (hour += 12);
+}
+
+function StringChallenge(strArr: string[]): number {
+  let minDiff = Infinity;
+
+  let i = 0;
+  let j = i + 1;
+
+  while (i < strArr.length) {
+    j = i + 1;
+
+    while (j < strArr.length) {
+      // parse it
+      const [currHr, currMin] = parseTime(strArr[i]);
+      const [nextHr, nextMin] = parseTime(strArr[j]);
+
+      let currHrFormatted = get24HourFormat(currHr, strArr[i].includes("am"));
+      let nextHrFormatted = get24HourFormat(nextHr, strArr[j].includes("am"));
+
+      //  + 12 : 0 + currHr;
+      const diff = Math.abs(
+        currHrFormatted * 60 + currMin - (nextHrFormatted * 60 + nextMin)
+      );
+
+      if (diff < minDiff) {
+        minDiff = diff;
+      }
+
+      j++;
+    }
+
+    i++;
+  }
+
+  return minDiff;
+}
+
+// console.log(findMinDifference(["11:59pm", "12:00am"]));
+// console.log(findMinDifference(["12:00am", "23:59am"]));
+// console.log(findMinDifference(["12:12pm", "12:13am"]));
+// console.log(findMinDifference(["12:00am", "11:59pm", "12:00am"]));
+// console.log(findMinDifference(["2:10pm", "1:30pm", "10:30am", "4:42pm"]));
+// console.log(StringChallenge(["11:59pm", "12:00am"]));
+// console.log(StringChallenge(["12:00am", "23:59am"]));
+// console.log(StringChallenge(["12:12pm", "12:13am"]));
+// console.log(StringChallenge(["12:00am", "11:59pm", "12:00am"]));
+// console.log(StringChallenge(["2:10pm", "1:30pm", "10:30am", "4:42pm"]));
+
 // console.log(hasCycle(head));
 // console.log(isPalindrome(head));
 // console.log(removeElements(head, 1));
