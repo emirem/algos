@@ -383,7 +383,7 @@ function isPalindrome(head: ListNode | undefined): boolean {
     return false;
   }
 
-  const stack = [];
+  const stack: number[] = [];
   let curentNode: ListNode | undefined = head;
 
   while (curentNode) {
